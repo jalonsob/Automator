@@ -535,7 +535,10 @@ def update_gerrit_repositories(db_user, db_pass, database, trackers):
                                  "-d", database, "-b", "bicho", "-l"],
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         process_output = proc.communicate()
-        db_projects = eval(process_output[0])
+        if proc.returncode != 0:
+            db_projects=[]
+        else:
+            db_projects = eval(process_output[0])
 
         # Retrieving projects
         if options['gerrit'].has_key('projects'):
